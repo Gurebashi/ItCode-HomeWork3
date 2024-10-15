@@ -25,3 +25,4 @@ class StyleAdmin(admin.ModelAdmin):
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("category_name",)
+

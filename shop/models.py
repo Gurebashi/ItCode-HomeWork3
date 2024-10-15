@@ -29,7 +29,7 @@ class Picture(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
-    cover_picture = models.ImageField(verbose_name="Картина", upload_to="", unique=True)
+    cover_picture = models. ImageField(verbose_name="Картина", upload_to="", unique=True)
     category = models.ForeignKey(
         "Category",
         verbose_name="Категория",
@@ -63,8 +63,8 @@ class Picture(models.Model):
 
 
 class Painter(models.Model):
-    first_name = models.CharField(verbose_name="Имя", max_length=255)
     last_name = models.CharField(verbose_name="Фамилия", max_length=255)
+    first_name = models.CharField(verbose_name="Имя", max_length=255)
     patronymic = models.CharField(verbose_name="Отчество", max_length=255, blank=True)
     birth_date = models.DateField(verbose_name="Дата рождения")
 
@@ -74,7 +74,7 @@ class Painter(models.Model):
         ordering = ["-first_name"]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} {self.patronymic}"
+        return f"{self.last_name} {self.first_name} {self.patronymic}"
 
 
 class Biography(models.Model):
@@ -95,7 +95,7 @@ class Biography(models.Model):
         blank=True,
     )
     painter_picture = models.ImageField(
-        verbose_name="Фотография автора", upload_to="", blank=True
+        verbose_name="Фотография автора", upload_to="", blank=True,null=True
     )
 
     class Meta:
@@ -123,21 +123,10 @@ class Style(models.Model):
 
 
 class Category(models.Model):
-    Category_Options = [
-        ("Портрет", "Портрет"),
-        ("Пейзаж", "Пейзаж"),
-        ("Исторический", "Исторический"),
-        ("Батальный", "Батальный"),
-        ("Натюрморт", "Натюрморт"),
-        ("Бытовой", "Бытовой"),
-        ("Мифиологический", "Мифиологический"),
-        ("Анималистический", "Анималистический"),
-        ("Архитектурный", "Архитектурный"),
-    ]
     category_name = models.CharField(
         verbose_name="Категория",
         max_length=255,
-        choices=Category_Options,
+        unique=True,
         blank=True,
     )
 

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ picture.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="/media/{{picture.cover_picture }}" alt="{{ picture.title }}" class="img-fluid rounded shadow-lg">
+        </div>
+        <div class="col-md-6">
+            <h3 class="text-center">
+                <span class="badge bg-primary">Цена: </span>
+                <span class="badge bg-light text-dark">{{ picture.price|stringformat:".0f" }} Руб.</span>
+            </h3>
+
+            <h1 class="text-center">{{ picture.title }}</h1>
+
+            <h5 class="text-center">Автор: {{ picture.author|default:"Неизвестный автор" }}</h5>
+            <p class="text-center">Жанр: {{ picture.category }}</p>
+            <p><strong>Описание:</strong><span class="text-secondary"> {{ picture.history|default:"История картины неизвестна..." }}</span></p>
+            <p><strong>Стиль: </strong><span class="text-secondary">
+                {% for style in picture.style.all %}
+                    {{ style }}{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </span></p>
+
+            <p><strong>Год публикации: </strong> {{ picture.public_date|date:"Y" }}</p>
+        <p><strong>
+                {% if picture.is_original %}
+                    <span class="badge bg-success">Оригинал</span>
+                {% else %}
+                    <span class="badge bg-danger">Копия</span>
+                {% endif %}
+            </strong>
+        <strong>
+                {% if picture.availability %}
+                    <span class="badge bg-success">В наличии</span>
+                {% else %}
+                    <span class="badge bg-danger">Продано</span>
+                {% endif %}
+            </strong>
+
+            </p>
+            <div class="d-flex justify-content-center">
+                <a href="{% url 'pictures_list' %}" class="btn btn-secondary me-2">Назад к галлерее</a>
+                <a href="{% url 'pictures_update' picture.pk %}" class="btn btn-warning me-2">Редактировать</a>
+                <a href="{% url 'pictures_delete' picture.pk %}" class="btn btn-danger">Удалить </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

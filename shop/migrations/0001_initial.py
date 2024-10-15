@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('biography_text', models.TextField(blank=True, verbose_name='Текст биографии')),
                 ('contact_info', models.CharField(blank=True, max_length=255, unique=True, verbose_name='Контактная информация')),
-                ('painter_picture', models.ImageField(blank=True, upload_to='images/', verbose_name='Фотография автора')),
+                ('painter_picture', models.ImageField(blank=True, upload_to='icon/', verbose_name='Фотография автора')),
                 ('painter', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='biography', to='shop.painter', verbose_name='Painter')),
             ],
             options={

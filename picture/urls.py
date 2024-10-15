@@ -16,10 +16,16 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from shop.views import display_image
+from shop import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('picture_list/', views.PictureListView.as_view(), name='pictures_list'),
     path("media/<str:image_name>", display_image, name="display_image"),
+    path('picture/<int:pk>/delete', views.PictureDeleteView.as_view(), name='pictures_delete'),
+    path('picture/<int:pk>/update/', views.PictureUpdateView.as_view(), name='pictures_update'),
+    path('picture/<int:pk>/', views.PictureDetailView.as_view(), name='pictures_detail'),
+    path('picture/create', views.PictureCreateView.as_view(), name='pictures_create'),
 ]

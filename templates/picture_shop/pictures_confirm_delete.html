@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление картины{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1 class="mb-4">Вы уверены, что хотите удалить картину "{{ object.title }}" ?</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="pk" value="{{ object.pk }}">
+                <button type="submit" class="btn btn-danger">Удалить</button>
+                <a href="{% url 'pictures_detail' picture.id %}" class="btn btn-secondary">Отменить</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
