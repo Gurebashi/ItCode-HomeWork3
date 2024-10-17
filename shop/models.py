@@ -24,7 +24,7 @@ class Picture(models.Model):
     history = models.CharField(
         verbose_name="История картины", max_length=1024, blank=True
     )
-    price = models.DecimalField(
+    price = models.DecimalField (
         verbose_name="Стоимость", max_digits=12, decimal_places=2
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
@@ -32,7 +32,7 @@ class Picture(models.Model):
     cover_picture = models. ImageField(verbose_name="Картина", upload_to="", unique=True)
     category = models.ForeignKey(
         "Category",
-        verbose_name="Категория",
+        verbose_name="Жанр",
         blank=True,
         null=True,
         related_name="Categories",

@@ -10,7 +10,8 @@ import os
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django_filters.views import FilterView
+from shop import filters
 from shop.models import Picture
 
 def display_image(request, image_name):
@@ -25,10 +26,11 @@ def display_image(request, image_name):
         return HttpResponse("Не удается найти изображение", status=404)
 
 
-class PictureListView(ListView):
+class PictureListView(FilterView):
     template_name = 'picture_shop/pictures_list.html'
     model= Picture
     context_object_name = 'pictures'
+    filterset_class = filters.Picture
 
 class PictureDetailView(DetailView):
     template_name = 'picture_shop/pictures_detail.html'

@@ -1,5 +1,5 @@
-
 {% load django_bootstrap5 %}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -35,6 +35,7 @@
     </nav>
 
     <div class="container mt-5 mb-5">
+        {% block sidebar %}{% endblock %}
         {% block content %}
         {% endblock %}
     </div>

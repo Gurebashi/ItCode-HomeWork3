@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "shop",
     "picture",
     'django_bootstrap5',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

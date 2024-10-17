@@ -1,7 +1,23 @@
 {% extends 'base.html' %}
-
+{% load django_bootstrap5 %}
 {% block title %}Галлерея{% endblock %}
+{% block sidebar %}
+<div class="col-md-12 mt-1">
+    <div class="card card-body">
+        <h2 class="card-title">Фильтр</h2>
+        <form method="get" class="needs-validation" novalidate>
+            {% csrf_token %}
 
+            <div class="filter-group">
+                {{ filter.form.as_p }}
+            </div>
+
+
+            <button type="submit" class="btn btn-primary mt-3">Применить фильтр</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
 {% block content %}
   <div class="row">
     {% for picture in pictures %}
