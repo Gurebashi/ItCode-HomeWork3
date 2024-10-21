@@ -44,8 +44,7 @@ class PictureCreateView(CreateView):
     template_name = 'picture_shop/pictures_form.html'
     model = Picture
     context_object_name = 'picture'
-    fields = '__all__'
-    #    fields= ['title','history','price','author','is_original','availability']
+    fields= ['title','history','price','is_original','availability']
     def get_success_url(self):
        return reverse_lazy('pictures_detail',kwargs={'pk':self.object.pk})
 

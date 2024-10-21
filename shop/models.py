@@ -4,7 +4,7 @@ from django.db import models
 class Picture(models.Model):
     title = models.CharField(verbose_name="Название картины", max_length=255, null=True)
     public_date = models.DateField(
-        verbose_name="Дата публикации картины",
+        verbose_name="Дата публикации картины",null=True,auto_now_add=True
     )
 
     AVAILABILITY_CHOICES = [
