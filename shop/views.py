@@ -2,7 +2,7 @@ from audioop import reverse
 from lib2to3.fixes.fix_input import context
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from PIL import Image
 from django.conf import settings
 import os
@@ -11,6 +11,8 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
+from unicodedata import category
+
 from shop import filters
 from shop.models import Picture
 
@@ -43,13 +45,14 @@ class PictureCreateView(CreateView):
     model = Picture
     context_object_name = 'picture'
     fields = '__all__'
+    #    fields= ['title','history','price','author','is_original','availability']
     def get_success_url(self):
        return reverse_lazy('pictures_detail',kwargs={'pk':self.object.pk})
 
 class PictureUpdateView(UpdateView):
     template_name = 'picture_shop/pictures_form.html'
     model = Picture
-    fields= '__all__'
+    fields= ['title','history']
 
     def get_success_url(self):
         return reverse_lazy('pictures_detail',kwargs={'pk':self.object.pk})

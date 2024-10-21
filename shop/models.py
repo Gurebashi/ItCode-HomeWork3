@@ -29,7 +29,7 @@ class Picture(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
-    cover_picture = models. ImageField(verbose_name="Картина", upload_to="", unique=True)
+    cover_picture = models. ImageField(verbose_name="Картина", upload_to="", unique=True,null=True)
     category = models.ForeignKey(
         "Category",
         verbose_name="Жанр",
