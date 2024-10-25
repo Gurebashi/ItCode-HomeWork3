@@ -80,7 +80,7 @@ class Painter(models.Model):
 class Biography(models.Model):
     painter = models.OneToOneField(
         Painter,
-        verbose_name="Painter",
+        verbose_name="Художник",
         blank=True,
         null=True,
         related_name="biography",

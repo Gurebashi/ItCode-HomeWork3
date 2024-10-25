@@ -1,20 +1,17 @@
-from audioop import reverse
-from lib2to3.fixes.fix_input import context
-
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
 from PIL import Image
 from django.conf import settings
 import os
-
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
-from unicodedata import category
 
 from shop import filters
 from shop.models import Picture
+from rest_framework import viewsets
+from shop import serializers
+from shop import models
+
 
 def display_image(request, image_name):
     try:
@@ -28,11 +25,21 @@ def display_image(request, image_name):
         return HttpResponse("Не удается найти изображение", status=404)
 
 
+class PainterAPI(viewsets.ModelViewSet):
+    queryset = models.Painter.objects.all()
+    serializer_class = serializers.PainterSer
+
+class PictureAPI(viewsets.ModelViewSet):
+    queryset = models.Picture.objects.all()
+    serializer_class = serializers.PictureSer
+
+
 class PictureListView(FilterView):
     template_name = 'picture_shop/pictures_list.html'
-    model= Picture
+    model = Picture
     context_object_name = 'pictures'
     filterset_class = filters.Picture
+
 
 class PictureDetailView(DetailView):
     template_name = 'picture_shop/pictures_detail.html'
@@ -44,20 +51,22 @@ class PictureCreateView(CreateView):
     template_name = 'picture_shop/pictures_form.html'
     model = Picture
     context_object_name = 'picture'
-    fields= ['title','history','price','is_original','availability']
+    fields = ['title', 'history', 'price', 'is_original', 'availability']
+
     def get_success_url(self):
-       return reverse_lazy('pictures_detail',kwargs={'pk':self.object.pk})
+        return reverse_lazy('pictures_detail', kwargs={'pk': self.object.pk})
+
 
 class PictureUpdateView(UpdateView):
     template_name = 'picture_shop/pictures_form.html'
     model = Picture
-    fields= ['title','history']
+    fields = ['title', 'history']
 
     def get_success_url(self):
-        return reverse_lazy('pictures_detail',kwargs={'pk':self.object.pk})
+        return reverse_lazy('pictures_detail', kwargs={'pk': self.object.pk})
+
 
 class PictureDeleteView(DeleteView):
     template_name = 'picture_shop/pictures_confirm_delete.html'
     model = Picture
-    success_url=reverse_lazy('pictures_list')
-
+    success_url = reverse_lazy('pictures_list')

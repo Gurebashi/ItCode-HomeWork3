@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     "picture",
     'django_bootstrap5',
     'django_filters',
+    'rest_framework',
+    'drf_spectacular',
 ]
-
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',}
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -122,6 +124,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'templates', 'static'),
+]
+#STATIC_ROOT = os.path.join(BASE_DIR, 'templates', 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
