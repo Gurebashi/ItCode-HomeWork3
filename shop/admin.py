@@ -26,3 +26,17 @@ class StyleAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("category_name",)
 
+
+@admin.register(models.User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username',)
+
+
+@admin.register(models.CartItem)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("picture", "cart")
+
+
+@admin.register(models.Cart)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("user",)

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Подтверждение удаления{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Вы уверены, что хотите удалить "{{ picture.title }}" из корзины?</h2>
+
+    <p>Название: {{ cart_item.picture.title }}</p>
+    <p>Цена: {{ cart_item.picture.price }} руб.</p>
+
+    <form method="post">
+        {% csrf_token %}
+    <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-danger me-2">Да, удалить</button>
+            <a href="{% url 'cart' %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

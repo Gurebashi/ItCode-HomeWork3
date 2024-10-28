@@ -3,20 +3,47 @@
 {% block title %}Галлерея{% endblock %}
 {% block sidebar %}
 <div class="col-md-12 mt-1">
+ <h1 class="gallery-title">Галлерея ART</h1>
     <div class="card card-body">
-        <h2 class="card-title">Фильтр</h2>
-        <form method="get" class="needs-validation" novalidate>
-            {% csrf_token %}
+        <button class="filter-toggle btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#filterForm">
+            Фильтр
+            <span class="filter-icon">
+                <i class="bi bi-chevron-down"></i>
+            </span>
+        </button>
+        <div class="collapse" id="filterForm">
+            <form method="get" class="needs-validation" novalidate>
+                {% csrf_token %}
 
-            <div class="filter-group">
-                {{ filter.form.as_p }}
-            </div>
+                <div class="filter-group">
+                    {{ filter.form.as_p }}
+                </div>
 
-
-            <button type="submit" class="btn btn-primary mt-3">Применить фильтр</button>
-        </form>
+                <button type="submit" class="btn btn-primary mt-3">Применить фильтр</button>
+            </form>
+        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterToggle = document.querySelector('.filter-toggle');
+        const filterForm = document.querySelector('#filterForm');
+        const filterIcon = document.querySelector('.filter-icon i');
+
+        filterToggle.addEventListener('click', function() {
+            if (filterForm.classList.contains('show')) {
+                filterIcon.classList.remove('bi-chevron-up');
+                filterIcon.classList.add('bi-chevron-down');
+            } else {
+                filterIcon.classList.remove('bi-chevron-down');
+                filterIcon.classList.add('bi-chevron-up');
+            }
+        });
+    });
+</script>
 {% endblock %}
 {% block content %}
   <div class="row">
@@ -29,6 +56,7 @@
               <h6 class="card-history"><span class="text-secondary">{{ picture.history|truncatechars:40|default:"История картины неизвестна..."}}</span></h6>
               <div class="d-flex justify-content-between align-items-center"> <h6 class="price-badge text-primary" style="font-size: 1.3em;">{{ picture.price|stringformat:".0f" }} руб.</h6>
               <a href="{% url 'pictures_detail' picture.pk %}" class="btn btn-primary">Подробнее</a>
+
             </div>
           </div>
         </div>

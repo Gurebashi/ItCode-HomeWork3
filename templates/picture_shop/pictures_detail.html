@@ -43,9 +43,17 @@
 
             </p>
             <div class="d-flex justify-content-center">
+            {% if user.is_authenticated and picture.availability %}
+                <a href="{% url 'add-to-cart' picture.pk %}" class="btn btn-success me-2">Добавить в корзину</a>
+                {% else %}
+                <a href="" class="btn btn-secondary disabled me-2">Добавить в корзину</a>
+
+            {% endif %}
                 <a href="{% url 'pictures_list' %}" class="btn btn-secondary me-2">Назад к галлерее</a>
+                {% if user.is_painter %}
                 <a href="{% url 'pictures_update' picture.pk %}" class="btn btn-warning me-2">Редактировать</a>
                 <a href="{% url 'pictures_delete' picture.pk %}" class="btn btn-danger">Удалить </a>
+                {% endif %}
             </div>
         </div>
     </div>

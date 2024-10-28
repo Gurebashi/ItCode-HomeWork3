@@ -29,7 +29,7 @@ class Picture(django_filters.FilterSet):
     def filter_term(self, queryset, name, value):
        criteria =Q()
        for term in value.split():
-           criteria &= Q(title__icontains=term) |Q(author__last_name__icontains=term) |Q(author__first_name__icontains=term)| Q(history__icontains=term)
+           criteria &= Q(title__icontains=term) |Q(aouthor__last_name__icntains=term) |Q(author__first_name__icontains=term)| Q(history__icontains=term)
        return queryset.filter(criteria).distinct()
     def filter_stylecat(selfself, queryset, name, value): ##Функция для создания фильтра по поиску картин с определенным пейзажем и определенным жанром
         stylecategory=Q()

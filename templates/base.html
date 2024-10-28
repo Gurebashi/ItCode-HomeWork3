@@ -4,42 +4,68 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{%block title%}{%endblock%}</title>
-    {%  bootstrap_css %}
+    <title>{% block title %}{% endblock %}</title>
+    {% bootstrap_css %}
     <style>
         .card-img-top {
             height: 400px;
             object-fit: cover;
         }
+
+       .gallery-title {
+            text-align: center;
+            margin-bottom: 30px;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Магазин Картин</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'pictures_list' %}">Картины</a>
-                    </li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        {% if user.is_authenticated %}
+            <a class="navbar-brand" href="#">Здравствуйте, {{ user.username }}</a>
+        {% endif %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'pictures_list' %}">Картины</a>
+                </li>
+                {% if user.is_painter %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'pictures_create' %}">Добавить картину</a>
                     </li>
-                </ul>
-            </div>
+                {% endif %}
+                {% if user.is_authenticated %}
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart' %}">Корзина </a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}?next={% url 'pictures_list' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link">Выйти</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Войти</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
-
-    <div class="container mt-5 mb-5">
-        {% block sidebar %}{% endblock %}
-        {% block content %}
-        {% endblock %}
     </div>
+</nav>
 
-    {% bootstrap_javascript %}
+<div class="container mt-5 mb-5">
+    {% block sidebar %}{% endblock %}
+    {% block content %}
+    {% endblock %}
+</div>
+
+{% bootstrap_javascript %}
 </body>
 </html>

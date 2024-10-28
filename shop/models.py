@@ -1,11 +1,30 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+
+class User(AbstractUser):
+    ROLE_CHOICES=[
+        ('Painter', 'Художник'),
+        ('Client', 'Покупатель'),
+    ]
+    role=models.CharField(max_length=10,choices=ROLE_CHOICES,default='Client',verbose_name="Роль")
+
+    class Meta:
+        ordering = ("username",)
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+    def is_painter(self):
+        return self.role=='Painter'
+    def is_client(self):
+        return self.role=='Client'
+
+    def __str__(self):
+        return self.username
 
 
 class Picture(models.Model):
     title = models.CharField(verbose_name="Название картины", max_length=255, null=True)
-    public_date = models.DateField(
-        verbose_name="Дата публикации картины",null=True,auto_now_add=True
-    )
+    public_date = models.DateField(verbose_name="Дата публикации картины", null=True)
 
     AVAILABILITY_CHOICES = [
         (True, "В наличии"),
@@ -24,12 +43,12 @@ class Picture(models.Model):
     history = models.CharField(
         verbose_name="История картины", max_length=1024, blank=True
     )
-    price = models.DecimalField (
+    price = models.DecimalField(
         verbose_name="Стоимость", max_digits=12, decimal_places=2
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
-    cover_picture = models. ImageField(verbose_name="Картина", upload_to="", unique=True,null=True)
+    cover_picture = models.ImageField(verbose_name="Картина", upload_to="", unique=True, null=True)
     category = models.ForeignKey(
         "Category",
         verbose_name="Жанр",
@@ -95,7 +114,7 @@ class Biography(models.Model):
         blank=True,
     )
     painter_picture = models.ImageField(
-        verbose_name="Фотография автора", upload_to="", blank=True,null=True
+        verbose_name="Фотография автора", upload_to="", blank=True, null=True
     )
 
     class Meta:
@@ -137,3 +156,59 @@ class Category(models.Model):
 
     def __str__(self):
         return self.category_name
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name="cart")
+
+    class Meta:
+        verbose_name = "Корзина пользователя"
+        verbose_name_plural = "Корзины пользователей"
+
+    def get_total_price(self):
+        total = 0
+        for item in self.cart_items.all():
+            total += item.get_total_price()
+        return total
+    def __str__(self):
+        return self.user.username
+
+class CartItem(models.Model):
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='cart_items')
+    picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Элемент корзины"
+        verbose_name_plural = "Элементы корзины"
+
+    def get_total_price(self):
+        total = self.picture.price
+        return total
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, choices=(
+        ('pending', 'Ожидает подтверждения'),
+        ('processing', 'В обработке'),
+        ('shipped', 'Отправлен'),
+        ('completed', 'Завершен'),
+    ), default='pending')
+
+    def get_total_price(self):
+        total = 0
+        for item in self.order_items.all():
+            total += item.get_total_price()
+        return total
+
+    def __str__(self):
+        return f"Заказ #{self.id}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
+    picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def get_total_price(self):
+        return  self.price
+
+    def __str__(self):
+        return f"Товар: {self.picture.title}"
