@@ -1,86 +1,211 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+
 {% block title %}Галлерея{% endblock %}
+
 {% block sidebar %}
-<div class="col-md-12 mt-1">
- <h1 class="gallery-title">Галлерея ART</h1>
-    <div class="card card-body">
-        <button class="filter-toggle btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#filterForm">
-            Фильтр
-            <span class="filter-icon">
+    <div class="col-md-12 mt-1">
+        <h1 class="gallery-title">Галлерея ART</h1>
+        <div class="card card-body filter-container">
+            <button class="filter-toggle btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#filterForm">
+                Фильтр
+                <span class="filter-icon">
                 <i class="bi bi-chevron-down"></i>
             </span>
-        </button>
-        <div class="collapse" id="filterForm">
-            <form method="get" class="needs-validation" novalidate>
-                {% csrf_token %}
+            </button>
+            <div class="collapse" id="filterForm">
+                <form method="get" class="needs-validation" novalidate>
+                    {% csrf_token %}
 
-                <div class="filter-group">
-                    {{ filter.form.as_p }}
-                </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="title" class="form-label">Название картины</label>
+                            {{ filter.form.title }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="author" class="form-label">Автор</label>
+                            {{ filter.form.author }}
+                        </div>
+                    </div>
 
-                <button type="submit" class="btn btn-primary mt-3">Применить фильтр</button>
-            </form>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">Жанр</label>
+                            {{ filter.form.category }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="style" class="form-label">Стиль</label>
+                            {{ filter.form.style }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="price_range" class="form-label">Цена от и до</label>
+                            {{ filter.form.price_range }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="public_data_range" class="form-label">Год картины от и до</label>
+                            {{ filter.form.public_data_range }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="availability" name="availability"
+                                       value="True">
+                                {{ filter.form.availability.label_tag }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="original" name="original"
+                                       value="True">
+                                {{ filter.form.original.label_tag }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="term" class="form-label">Поиск по критериям</label>
+                            {{ filter.form.term }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="style_category_union" class="form-label">Сочетание жанра и стиля</label>
+                            {{ filter.form.style_category_union }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="order_by" class="form-label">Сортировка по цене:</label>
+                            {{ filter.form.order_by }}
+                        </div>
+                    </div>
+                    <form method="get">
+{#                        <select name="order_by" class="form-control">#}
+{#                            <option value="">Без сортировки</option>#}
+{#                            <option value="price">По возрастанию</option>#}
+{#                            <option value="-price">По убыванию</option>#}
+{#                        </select>#}
+
+                    <button type="submit" class="btn btn-primary mt-3">Применить фильтр</button>
+                    <form method="get">
+                    </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block javascript %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const filterToggle = document.querySelector('.filter-toggle');
-        const filterForm = document.querySelector('#filterForm');
-        const filterIcon = document.querySelector('.filter-icon i');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterToggle = document.querySelector('.filter-toggle');
+            const filterForm = document.querySelector('#filterForm');
+            const filterIcon = document.querySelector('.filter-icon i');
 
-        filterToggle.addEventListener('click', function() {
-            if (filterForm.classList.contains('show')) {
-                filterIcon.classList.remove('bi-chevron-up');
-                filterIcon.classList.add('bi-chevron-down');
-            } else {
-                filterIcon.classList.remove('bi-chevron-down');
-                filterIcon.classList.add('bi-chevron-up');
-            }
+            filterToggle.addEventListener('click', function () {
+                if (filterForm.classList.contains('show')) {
+                    filterIcon.classList.remove('bi-chevron-up');
+                    filterIcon.classList.add('bi-chevron-down');
+                } else {
+                    filterIcon.classList.remove('bi-chevron-down');
+                    filterIcon.classList.add('bi-chevron-up');
+                }
+            });
         });
-    });
-</script>
+    </script>
+{% endblock %}
+
+{% block stylesheet %}
+    <style>
+        .filter-container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Добавляем тень */
+        }
+
+        .filter-toggle {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .filter-icon {
+            float: right;
+            margin-left: 10px;
+        }
+
+        .form-label {
+            font-weight: bold; /* Делаем текст подписи жирным */
+            color: #333; /* Устанавливаем цвет подписи */
+        }
+
+        .form-control {
+            border-radius: 5px; /* Скругленные углы */
+            border: 1px solid #ccc; /* Граница */
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Синий цвет */
+            border: none; /* Убираем границу */
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9; /* Темнее при наведении курсора */
+        }
+    </style>
 {% endblock %}
 {% block content %}
-  <div class="row">
-    {% for picture in pictures %}
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <img src="/media/{{ picture.cover_picture }}" class="card-img-top" alt="{{ picture.title }}" data-picture-id="{{ picture.id }}">
-          <div class="card-body">
-            <h4 class="card-title">{{ picture.title|truncatechars:20 }}</h4>
-              <h6 class="card-history"><span class="text-secondary">{{ picture.history|truncatechars:40|default:"История картины неизвестна..."}}</span></h6>
-              <div class="d-flex justify-content-between align-items-center"> <h6 class="price-badge text-primary" style="font-size: 1.3em;">{{ picture.price|stringformat:".0f" }} руб.</h6>
-              <a href="{% url 'pictures_detail' picture.pk %}" class="btn btn-primary">Подробнее</a>
 
+    <div class="row">
+        {% for picture in pictures %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="/media/{{ picture.cover_picture }}" class="card-img-top" alt="{{ picture.title }}"
+                         data-picture-id="{{ picture.id }}">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ picture.title|truncatechars:20 }}</h4>
+                        <h6 class="card-history"><span
+                                class="text-secondary">{{ picture.history|truncatechars:40|default:"История картины неизвестна..." }}</span>
+                        </h6>
+                        <div class="d-flex justify-content-between align-items-center"><h6
+                                class="price-badge text-primary"
+                                style="font-size: 1.3em;">{{ picture.price|stringformat:".0f" }} руб.</h6>
+                            <a href="{% url 'pictures_detail' picture.pk %}" class="btn btn-primary">Подробнее</a>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-
-
-  <div class="modal fade" id="pictureDetailsModal" tabindex="-1" aria-labelledby="pictureDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="pictureDetailsModalLabel"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <img id="modal-image" src="" class="img-fluid" alt="">
-          <p id="modal-description"></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        </div>
-      </div>
+        {% endfor %}
     </div>
-  </div>
+
+
+    <div class="modal fade" id="pictureDetailsModal" tabindex="-1" aria-labelledby="pictureDetailsModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pictureDetailsModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modal-image" src="" class="img-fluid" alt="">
+                    <p id="modal-description"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
