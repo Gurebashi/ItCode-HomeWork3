@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-
+{% load django_bootstrap5 %}
+{% load static %}
 {% block title %}{{ picture.title }}{% endblock %}
 
 {% block content %}
@@ -10,52 +11,76 @@
         </div>
         <div class="col-md-6">
             <h3 class="text-center">
-                <span class="badge bg-primary">Цена: </span>
-                <span class="badge bg-light text-dark">{{ picture.price|stringformat:".0f" }} Руб.</span>
+                <span class="badge bg-primary shadow">Цена: </span>
+                <span class="badge bg-light text-dark shadow">{{ picture.price|stringformat:".0f" }} Руб.</span>
             </h3>
 
             <h1 class="text-center">{{ picture.title }}</h1>
 
-            <h5 class="text-center">Автор: {{ picture.author|default:"Неизвестный автор" }}</h5>
+            <h5 class="text-center">Автор: <a  type="text" class="text" data-bs-container="body"  data-bs-toggle="popover" data-bs-placement="right"  data-bs-html="true" data-bs-trigger="hover" title='{{ picture.author }}' data-bs-content="<img src='/media/{{ picture.author.biography.painter_picture }}' class='img-fluid' alt='{{ picture.author }}'>{{ picture.author.biography.biography_text }}"> {{ picture.author|default:"Неизвестный автор" }} </a></h5>
+{#             <h5 class="text-center">Автор: <a href="">{{ picture.author|default:"Неизвестный автор" }}</a></h5>#}
             <p class="text-center">Жанр: {{ picture.category }}</p>
             <p><strong>Описание:</strong><span class="text-secondary"> {{ picture.history|default:"История картины неизвестна..." }}</span></p>
-            <p><strong>Стиль: </strong><span class="text-secondary">
+             <p><strong>Стиль: </strong><span class="text-secondary">
                 {% for style in picture.style.all %}
-                    {{ style }}{% if not forloop.last %},{% endif %}
+                    <span class="tooltip-container">
+                        <button type="button" class="badge bg-dark shadow" data-bs-toggle="popover" data-bs-trigger="hover" title={{ style.style_name }} data-bs-content="{{ style.style_description }}">{{ style }}</button>
+                    </span>
                 {% endfor %}
             </span></p>
 
             <p><strong>Год публикации: </strong> {{ picture.public_date|date:"Y" }}</p>
-        <p><strong>
+            <p><strong>
                 {% if picture.is_original %}
-                    <span class="badge bg-success">Оригинал</span>
+                    <span class="badge bg-success shadow">Оригинал</span>
                 {% else %}
-                    <span class="badge bg-danger">Копия</span>
+                    <span class="badge bg-danger shadow">Копия</span>
                 {% endif %}
             </strong>
-        <strong>
+            <strong>
                 {% if picture.availability %}
-                    <span class="badge bg-success">В наличии</span>
+                    <span class="badge bg-success shadow">В наличии</span>
                 {% else %}
-                    <span class="badge bg-danger">Продано</span>
+                    <span class="badge bg-danger shadow">Продано</span>
                 {% endif %}
             </strong>
-
             </p>
             <div class="d-flex justify-content-center">
-            {% if user.is_authenticated and picture.availability %}
-                <a href="{% url 'add-to-cart' picture.pk %}" class="btn btn-success me-2">Добавить в корзину</a>
+                {% if user.is_authenticated and picture.availability %}
+                    <a href="{% url 'add-to-cart' picture.pk %}" class="btn btn-success me-2 shadow">Добавить в корзину</a>
                 {% else %}
-                <a href="" class="btn btn-secondary disabled me-2">Добавить в корзину</a>
-
-            {% endif %}
-                <a href="{% url 'pictures_list' %}" class="btn btn-secondary me-2">Назад к галлерее</a>
+                    <a href="" class="btn btn-secondary disabled me-2 shadow">Добавить в корзину</a>
+                {% endif %}
+                <a href="{% url 'pictures_list' %}" class="btn btn-secondary me-2 shadow">Назад к галлерее</a>
                 {% if user.is_painter %}
-                <a href="{% url 'pictures_update' picture.pk %}" class="btn btn-warning me-2">Редактировать</a>
-                <a href="{% url 'pictures_delete' picture.pk %}" class="btn btn-danger">Удалить </a>
+                    <a href="{% url 'pictures_update' picture.pk %}" class="btn btn-warning me-2 shadow">Редактировать</a>
+                    <a href="{% url 'pictures_delete' picture.pk %}" class="btn btn-danger shadow">Удалить </a>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const styleElements = document.querySelectorAll('.tooltip-container');
+
+        styleElements.forEach(function(element) {
+            element.addEventListener('mouseover', function(event) {
+                const tooltipText = element.querySelector('.tooltiptext');
+                tooltipText.style.visibility = 'visible';
+                tooltipText.style.opacity = '1';
+            });
+
+            element.addEventListener('mouseout', function(event) {
+                const tooltipText = element.querySelector('.tooltiptext');
+                tooltipText.style.visibility = 'hidden';
+                tooltipText.style.opacity = '0';
+            });
+        });
+    });
+</script>
 {% endblock %}

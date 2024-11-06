@@ -28,4 +28,3 @@ class PictureSer(serializers.ModelSerializer):
     class Meta:
         model = models.Picture
         fields = '__all__'
-

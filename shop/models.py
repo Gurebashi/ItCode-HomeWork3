@@ -40,7 +40,7 @@ class Picture(models.Model):
     is_original = models.BooleanField(
         verbose_name="Оригинал", choices=IS_ORIGINAL_CHOICES
     )
-    history = models.CharField(
+    history = models.TextField(
         verbose_name="История картины", max_length=1024, blank=True
     )
     price = models.DecimalField(
@@ -106,7 +106,7 @@ class Biography(models.Model):
         on_delete=models.SET_NULL,
     )
     biography_text = models.TextField(
-        verbose_name="Текст биографии", blank=True, unique=True
+        verbose_name="Текст биографии", blank=True, unique=True,max_length=750
     )
     contact_info = models.CharField(
         verbose_name="Контактная информация",
@@ -128,7 +128,7 @@ class Biography(models.Model):
 
 class Style(models.Model):
     style_name = models.CharField(verbose_name="Стиль", max_length=255)
-    style_description = models.CharField(
+    style_description = models.TextField(
         verbose_name="Описание стиля", max_length=255, blank=True
     )
 
@@ -182,33 +182,3 @@ class CartItem(models.Model):
     def get_total_price(self):
         total = self.picture.price
         return total
-
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=50, choices=(
-        ('pending', 'Ожидает подтверждения'),
-        ('processing', 'В обработке'),
-        ('shipped', 'Отправлен'),
-        ('completed', 'Завершен'),
-    ), default='pending')
-
-    def get_total_price(self):
-        total = 0
-        for item in self.order_items.all():
-            total += item.get_total_price()
-        return total
-
-    def __str__(self):
-        return f"Заказ #{self.id}"
-
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
-    picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def get_total_price(self):
-        return  self.price
-
-    def __str__(self):
-        return f"Товар: {self.picture.title}"
