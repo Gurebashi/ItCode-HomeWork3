@@ -4,135 +4,135 @@
         Редактирование картины: {{ picture.title }}
     {% else %}
         Добавление картины
-    {% endif     %}
-    {% endblock %}
+    {% endif %}
+{% endblock %}
 
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card shadow-sm rounded">
-                <img src="/media/{{picture.cover_picture }}" alt="{{ picture.title }}" class="card-img-top">
-                <div class="card-body text-center">
-                    <h5 class="card-title">{{ picture.title }}</h5>
-                    <p class="card-text">Текущая обложка</p>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow-sm rounded">
+                    <img src="/media/{{ picture.cover_picture }}" alt="{{ picture.title }}" class="card-img-top">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ picture.title }}</h5>
+                        <p class="card-text">Текущая обложка</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <h1 class="mb-4">Редактирование рисунка</h1>
+            <div class="col-md-6">
+                <h1 class="mb-4">Редактирование рисунка</h1>
 
-            <form method="POST" enctype="multipart/form-data" class="form-group">
-                {% csrf_token %}
+                <form method="POST" enctype="multipart/form-data" class="form-group">
+                    {% csrf_token %}
 
-                <div class="form-group mb-4"> <label for="cover_picture">Обложка:</label>
-                    {{ form.cover_picture }}
-                    {% if form.cover_picture.errors %}
-                        <div class="text-danger">
-                            {{ form.cover_picture.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="form-group mb-4"><label for="cover_picture">Обложка:</label>
+                        {{ form.cover_picture }}
+                        {% if form.cover_picture.errors %}
+                            <div class="text-danger">
+                                {{ form.cover_picture.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-                <div class="form-group mb-4">
-                    <label for="title">Название:</label>
-                    {{ form.title }}
-                    {% if form.title.errors %}
-                        <div class="text-danger">
-                            {{ form.title.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="form-group mb-4">
+                        <label for="title">Название:</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div class="text-danger">
+                                {{ form.title.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-                <div class="form-group mb-4">
-                    <label for="author">Автор:</label>
-                    {{ form.author }}
-                    {% if form.author.errors %}
-                        <div class="text-danger">
-                            {{ form.author.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="form-group mb-4">
+                        <label for="author">Автор:</label>
+                        {{ form.author }}
+                        {% if form.author.errors %}
+                            <div class="text-danger">
+                                {{ form.author.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-                <div class="form-group mb-4">
-                    <label for="style">Стиль:</label>
+                    <div class="form-group mb-4">
+                        <label for="style">Стиль:</label>
                         {{ form.style }}
-                    {% if form.style.errors %}
-                        <div class="text-danger">
-                            {{ form.style.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                        {% if form.style.errors %}
+                            <div class="text-danger">
+                                {{ form.style.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-                <div class="form-group mb-4">
-                    <label for="category">Категория:</label>
-                    {{ form.category }}
-                    {% if form.category.errors %}
-                        <div class="text-danger">
-                            {{ form.category.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="form-group mb-4">
+                        <label for="category">Категория:</label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            <div class="text-danger">
+                                {{ form.category.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-                <div class="form-group mb-4">
-                    <label for="public_date">Дата публикации:</label>
-                    {{ form.public_date }}
-                    {% if form.public_date.errors %}
-                        <div class="text-danger">
-                            {{ form.public_date.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-            <div class="form-group mb-4">
-                    <label for="history>Описание картины:</label>
-                    {{ form.history }}
-                    {% if history.errors %}
-                        <div class="text-danger">
-                            {{ form.history.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-            <div class="form-group mb-4">
-                    <label for="is_original">Оригинал: </label>
-                    {{ form.is_original }}
-                    {% if form.is_original.errors %}
-                        <div class="text-danger">
-                            {{ form.is_original.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-            <div class="form-group mb-4">
-                    <label for="availability">В наличии: </label>
-                    {{ form.availability }}
-                    {% if form.availability.errors %}
-                        <div class="text-danger">
-                            {{ form.availability.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-             <div class="form-group mb-4">
-                    <label for="price">Стоимость: </label>
-                    {{ form.price }}
-                    {% if form.price.errors %}
-                        <div class="text-danger">
-                            {{ form.price.errors }}
-                        </div>
-                    {% endif %}
-                </div>
+                    <div class="form-group mb-4">
+                        <label for="public_date">Дата публикации:</label>
+                        {{ form.public_date }}
+                        {% if form.public_date.errors %}
+                            <div class="text-danger">
+                                {{ form.public_date.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="history">Описание картины:</label>
+                        {{ form.history }}
+                        {% if form.history.errors %}
+                            <div class="text-danger">
+                                {{ form.history.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="is_original">Оригинал: </label>
+                        {{ form.is_original }}
+                        {% if form.is_original.errors %}
+                            <div class="text-danger">
+                                {{ form.is_original.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="availability">В наличии: </label>
+                        {{ form.availability }}
+                        {% if form.availability.errors %}
+                            <div class="text-danger">
+                                {{ form.availability.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="price">Стоимость: </label>
+                        {{ form.price }}
+                        {% if form.price.errors %}
+                            <div class="text-danger">
+                                {{ form.price.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
 
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-warning px-4 py-2">Сохранить</button>
-                    {% if picture.pk %}
-                         <a href="{% url 'pictures_detail' picture.pk %}" class="btn btn-secondary px-4 py-2 ml-2">Отменить</a>
-                    {% else %}
-                    <a href="{% url 'pictures_list' %}" class="btn btn-secondary px-4 py-2 ml-2">Отменить</a>
-                    {% endif %}
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-warning px-4 py-2">Сохранить</button>
+                        {% if picture.pk %}
+                            <a href="{% url 'pictures_detail' picture.pk %}" class="btn btn-secondary px-4 py-2 ml-2">Отменить</a>
+                        {% else %}
+                            <a href="{% url 'pictures_list' %}" class="btn btn-secondary px-4 py-2 ml-2">Отменить</a>
+                        {% endif %}
 
-                </div>
-            </form>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

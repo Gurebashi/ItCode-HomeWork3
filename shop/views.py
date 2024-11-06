@@ -59,7 +59,18 @@ class PictureCreateView(CreateView):
     template_name = 'picture_shop/pictures_form.html'
     model = Picture
     context_object_name = 'picture'
-    fields = "__all__"
+    fields = [
+        'title',
+        'public_date',
+        'availability',
+        'is_original',
+        'history',
+        'price',
+        'cover_picture',
+        'category',
+        'author',
+        'style',
+    ]
 
     def get_success_url(self):
         return reverse_lazy('pictures_detail', kwargs={'pk': self.object.pk})
@@ -68,7 +79,18 @@ class PictureCreateView(CreateView):
 class PictureUpdateView(UpdateView):
     template_name = 'picture_shop/pictures_form.html'
     model = Picture
-    fields = "__all__"
+    fields = [
+        'title',
+        'public_date',
+        'availability',
+        'is_original',
+        'history',
+        'price',
+        'cover_picture',
+        'category',
+        'author',
+        'style',
+    ]
 
     def get_success_url(self):
         return reverse_lazy('pictures_detail', kwargs={'pk': self.object.pk})
@@ -147,21 +169,3 @@ class RemoveFromCartView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return self.success_url
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
