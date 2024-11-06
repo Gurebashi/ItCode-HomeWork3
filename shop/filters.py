@@ -36,7 +36,7 @@ class Picture(django_filters.FilterSet):
     def filter_term(self, queryset, name, value):
         criteria = Q()
         for term in value.split():
-            criteria &= Q(title__icontains=term) | Q(aouthor__last_name__icntains=term) | Q(
+            criteria &= Q(title__icontains=term) | Q(author__last_name__icontains=term) | Q(
                 author__first_name__icontains=term) | Q(history__icontains=term)
         return queryset.filter(criteria).distinct()
 
