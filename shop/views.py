@@ -123,12 +123,6 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         return redirect('pictures_list')
-    else:
-        return redirect('pictures_list')
-
-
-def profile_view(request):
-    return render(request, 'picture_shop/profile.html')
 
 
 class CartView(LoginRequiredMixin, ListView):

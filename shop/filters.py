@@ -41,7 +41,7 @@ class Picture(django_filters.FilterSet):
         return queryset.filter(criteria).distinct()
 
     def filter_stylecat(selfself, queryset, name,
-                        value):  ##Функция для создания фильтра по поиску картин с определенным пейзажем и определенным жанром
+                        value):
         stylecategory = Q()
         for union in value.split():
             stylecategory &= Q(style__style_name__icontains=union) | Q(category__category_name__icontains=union)

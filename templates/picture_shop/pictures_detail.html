@@ -18,7 +18,7 @@
             <h1 class="text-center">{{ picture.title }}</h1>
 
             <h5 class="text-center">Автор: <a  type="text" class="text" data-bs-container="body"  data-bs-toggle="popover" data-bs-placement="right"  data-bs-html="true" data-bs-trigger="hover" title='{{ picture.author }}' data-bs-content="<img src='/media/{{ picture.author.biography.painter_picture }}' class='img-fluid' alt='{{ picture.author }}'>{{ picture.author.biography.biography_text }}"> {{ picture.author|default:"Неизвестный автор" }} </a></h5>
-{#             <h5 class="text-center">Автор: <a href="">{{ picture.author|default:"Неизвестный автор" }}</a></h5>#}
+
             <p class="text-center">Жанр: {{ picture.category }}</p>
             <p><strong>Описание:</strong><span class="text-secondary"> {{ picture.history|default:"История картины неизвестна..." }}</span></p>
              <p><strong>Стиль: </strong><span class="text-secondary">

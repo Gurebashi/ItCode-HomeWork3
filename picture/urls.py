@@ -43,5 +43,4 @@ urlpatterns = [
     path('login/',views.MyLoginView.as_view(), name='login'),
     path('register/',views.RegisterView.as_view(), name='register'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/profile/', views.profile_view, name='profile'),
 ]+router.urls
